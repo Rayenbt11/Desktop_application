@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Monthly Goals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+  
+        }
+        div{
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        #month-selector {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #month-select {
+            font-size: 1.2em;
+            padding: 5px;
+        }
+
+        .month-container {
+            display: none;
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .month-title {
+            font-size: 24px;
+            color: #ff6347;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .no-goals-message {
+            text-align: center;
+            color: #777;
+            display: none;
+        }
+
+        .goal-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .goal-list li {
+            background-color: #4682b4;
+            color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            text-align: center;
+            position: relative;
+        }
+
+        .goal-list li .delete-goal {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            display: none;
+            color: #f5f5f5;
+        }
+
+        .goal-list li:hover .delete-goal {
+            display: block;
+        }
+
+        .add-goal-btn {
+            background-color: #ff6347;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .add-goal-btn:hover {
+            background-color: #dc322f;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            #month-selector {
+                margin-bottom: 15px;
+            }
+
+            #month-select {
+                font-size: 1em;
+                padding: 3px;
+            }
+
+            .month-container {
+                padding: 15px;
+            }
+
+            .month-title {
+                font-size: 20px;
+            }
+
+            .goal-list li {
+                padding: 5px;
+                font-size: 14px;
+            }
+
+            .add-goal-btn {
+                padding: 5px 10px;
+                font-size: 14px;
+            }
+        }
+
+ 
+
+ .calendar-container {
+   width: 80%;
+   height: 100vh;
+   display: flex;
+   justify-content: center;
+   align-items: center
+ }
+
+ .calendar {
+   width: 45rem;
+   height: 52rem;
+   background-color: #222227;
+   box-shadow: 0 .5rem 3rem rgba(0, 0, 0, .4)
+ }
+   
+ .menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  .item {
+    float: left;
+    margin: 5px;
+    padding-top: 5px;
+  }
+  
+  .item a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding-bottom: 5px;
+    padding-top: 5px ;
+    text-decoration: none;
+  }
+  
+  .item a:hover {
+    background-color: #111;
+  }
+  .logo{
+  max-width: 200px;
+  max-height: 100%;
+  float: right;
+}
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul class="menu">
+            <li class="item"><a href="index.html">Calendar</a></li>
+            <li class="item"><a href="fav.html">Favourite Day</a></li>
+            <li class="item"><a href="monthly_goals.html">Monthly Goals</a></li>
+            <li class="item"><a href="weeklytasks/weekly.html">Weekly Tasks</a></li>
+            <li class="item"><a href="TodoList/daily.html">To-Do List</a></li>
+            <img class = logo src="logo.jpeg">
+        </ul>
+    </nav>
+    <h1>Monthly Goals</h1>
+
+    <div id="month-selector">
+        <select id="month-select">
+            <option value="">--Select a Month--</option>
+        </select>
+    </div>
+
+    <div id="month-goals-container"></div>
+    <script>
+    var months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+];
+
+function generateMonthlyGoals() {
+    // get HTML elements from DOM
+    var container = document.getElementById("month-goals-container");
+    var monthSelect = document.getElementById("month-select");
+// iterate through months
+    for (let i = 0; i < months.length; i++) {
+        let month = months[i];
+// create option for the month
+        let monthOption = document.createElement("option");
+        monthOption.value = month;
+        monthOption.textContent = month;
+        monthSelect.appendChild(monthOption);
+// monthly goal
+        let monthContainer = document.createElement("div");
+        monthContainer.id = month;
+        monthContainer.classList.add("month-container");
+
+        let monthTitle = document.createElement("h2");
+        monthTitle.classList.add("month-title");
+        monthTitle.textContent = month;
+// a message when no goals are shown
+        let noGoalsMessage = document.createElement("p");
+        noGoalsMessage.classList.add("no-goals-message");
+        noGoalsMessage.textContent = "No goals added for this month. Click 'Add Goal' to add one.";
+// load past goals from database
+        let goalList = document.createElement("ul");
+        goalList.classList.add("goal-list");
+
+        // Load goals from localStorage
+        let goals = JSON.parse(localStorage.getItem(month)) || [];
+        goals.forEach(goal => {
+            let newGoalItem = createGoalItem(goal, goalList, noGoalsMessage);
+            goalList.appendChild(newGoalItem);
+        });
+        noGoalsMessage.style.display = goals.length ? "none" : "block";
+// button to create a goal
+        let addGoalBtn = document.createElement("button");
+        addGoalBtn.classList.add("add-goal-btn");
+        addGoalBtn.textContent = "Add Goal";
+// listener to the button, once it's clicked the " prompt "" will show up
+        addGoalBtn.addEventListener("click", function () {
+            let newGoal = prompt("Enter your goal for " + month + ":");
+            if (newGoal) {
+                // Save the goal to localStorage
+                goals.push(newGoal);
+                localStorage.setItem(month, JSON.stringify(goals));
+
+                let newGoalItem = createGoalItem(newGoal, goalList, noGoalsMessage);
+                goalList.appendChild(newGoalItem);
+                noGoalsMessage.style.display = "none";
+            }
+        });
+// add elements to the container
+        monthContainer.appendChild(monthTitle);
+        monthContainer.appendChild(noGoalsMessage);
+        monthContainer.appendChild(goalList);
+        monthContainer.appendChild(addGoalBtn);
+
+        container.appendChild(monthContainer);
+    }
+// shows the clicked month
+    monthSelect.addEventListener("change", function() {
+        var selectedMonth = this.value;
+        var monthContainers = document.querySelectorAll(".month-container");
+
+        monthContainers.forEach(function(container) {
+            if (container.id === selectedMonth) {
+                container.style.display = "block";
+            } else {
+                container.style.display = "none";
+            }
+        });
+    });
+}
+// creates a list
+function createGoalItem(goal, goalList, noGoalsMessage) {
+    let newGoalItem = document.createElement("li");
+// button to delete the goal
+    let deleteGoalIcon = document.createElement("span");
+    deleteGoalIcon.classList.add("delete-goal");
+    deleteGoalIcon.textContent = "x";
+    deleteGoalIcon.addEventListener("click", function() {
+        goalList.removeChild(newGoalItem);
+        if(goalList.childNodes.length === 0) {
+            noGoalsMessage.style.display = "block";
+        }
+
+        // Delete the goal from localStorage
+        let month = newGoalItem.parentNode.parentNode.id;
+        let goals = JSON.parse(localStorage.getItem(month));
+        goals.splice(goals.indexOf(goal), 1);
+        localStorage.setItem(month, JSON.stringify(goals));
+    });
+
+    newGoalItem.textContent = goal;
+    newGoalItem.appendChild(deleteGoalIcon);
+    return newGoalItem;
+}
+
+generateMonthlyGoals();
+
+    </script>
+</body>
+</html>

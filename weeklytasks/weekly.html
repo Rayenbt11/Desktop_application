@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weekly Planner</title>
+    <link rel="stylesheet" type="text/css" href="weekly/weekly.css">
+</head>
+
+<body>
+    <script src="weekly/weekly.js"></script>
+    <script src="../main.js"></script>
+    <nav>
+        <ul class="menu">
+            <li class="item"><a href="../index.html">Calendar</a></li>
+            <li class="item"><a href="../fav.html">Favourite Day</a></li>
+            <li class="item"><a href="../monthly_goals.html">Monthly Goals</a></li>
+            <li class="item"><a href="weekly.html">Weekly Tasks</a></li>
+            <li class="item"><a href="../TodoList/daily.html">To-Do List</a></li>
+            <img class = logo src="../logo.jpeg">
+        </ul>
+    </nav>
+    <h1 class="title"><span>Weekly Planner</span></h1>
+ 
+    <div class="row">
+        <div class="column">  
+            <table class="plannerTable">
+                <div class="column">
+                    <h1 class="day"><span>Days</span></h1>
+
+                    <tr>
+                        <th class="weekday">Monday</th>
+                        <th class="weekday">Tuesday</th>
+                        <th class="weekday">Wednesday</th>
+                        <th class="weekday">Thursday</th>
+                        <th class="weekday">Friday</th>
+                        <th class="weekday">Saturday</th>
+                        <th class="weekday">Sunday</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" id="mondayTask" class="task-input">
+                            <button onclick="addTask('mondayTask')">Add Task</button>
+                            <ul id="mondayTaskList" class="task-list"></ul>
+                        </td>
+                        <td>
+                            <input type="text" id="tuesdayTask" class="task-input">
+                            <button onclick="addTask('tuesdayTask')">Add Task</button>
+                            <ul id="tuesdayTaskList" class="task-list"></ul>
+                        </td>
+                        <td>
+                            <input type="text" id="wednesdayTask" class="task-input">
+                            <button onclick="addTask('wednesdayTask')">Add Task</button>
+                            <ul id="wednesdayTaskList" class="task-list"></ul>
+                        </td>
+                        <td>
+                            <input type="text" id="thursdayTask" class="task-input">
+                            <button onclick="addTask('thursdayTask')">Add Task</button>
+                            <ul id="thursdayTaskList" class="task-list"></ul>
+                        </td>
+                        <td>
+                            <input type="text" id="fridayTask" class="task-input">
+                            <button onclick="addTask('fridayTask')">Add Task</button>
+                            <ul id="fridayTaskList" class="task-list"></ul>
+                        </td>
+                        <td>
+                            <input type="text" id="saturdayTask" class="task-input">
+                            <button onclick="addTask('saturdayTask')">Add Task</button>
+                            <ul id="saturdayTaskList" class="task-list"></ul>
+                        </td>
+                        <td>
+                            <input type="text" id="sundayTask" class="task-input">
+                            <button onclick="addTask('sundayTask')">Add Task</button>
+                            <ul id="sundayTaskList" class="task-list"></ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="column">
+                <table>
+                    <div class="favorites" id="favoritesContainer">
+                        <h2>Favorites</h2>
+                        <input type="text" id="favoriteInput" class="task-input-favourites">
+                        <button onclick="addFavorite()">Add Favorite</button>
+                        <ul id="favoritesList" class="task-list-favourites" ondragstart="drag(event)" draggable="true"></ul>
+                        <button onclick="resetFavorites()" class="reset-button-favourite">Reset Favorites</button>
+                    </div>
+                </table>
+            </div>
+        </div>
+
+        <button onclick="resetTasks()" class="reset-button">Reset Tasks</button>
+
+    </body>
+</html>

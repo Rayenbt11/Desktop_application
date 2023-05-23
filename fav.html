@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Special Days</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'roboto', sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+
+        }
+        form{
+            margin: 20px;
+            margin-left: 20%;
+            margin-right: 20%;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2em;
+        }
+
+        #add-day-form {
+            
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #add-day-form input, #add-day-form button {
+            font-size: 1em;
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        #add-day-form button {
+            color: white;
+            background-color: #4682b4;
+            cursor: pointer;
+        }
+
+        #add-day-form button:hover {
+            background-color: #306998;
+        }
+
+        #special-days-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #special-days-list li {
+            background-color: #ffffff;
+            margin-bottom: 10px;
+            padding: 20px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+        }
+
+        #special-days-list li .day-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #special-days-list li .day-type {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        #special-days-list li .delete-day {
+            cursor: pointer;
+            color: #dc322f;
+        }
+
+        #special-days-list li .delete-day:hover {
+            color: #a71d2a;
+        }
+
+        @media (max-width: 600px) {
+            #add-day-form input, #add-day-form button {
+                width: 100%;
+            }
+        }
+
+
+ .calendar-container {
+   width: 80%;
+   height: 100vh;
+   display: flex;
+   justify-content: center;
+   align-items: center
+ }
+
+ .calendar {
+   width: 45rem;
+   height: 52rem;
+   background-color: #222227;
+   box-shadow: 0 .5rem 3rem rgba(0, 0, 0, .4)
+ }
+   
+ .menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  .item {
+    float: left;
+    margin: 5px;
+    padding-top: 5px;
+  }
+  
+  .item a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding-bottom: 5px;
+    padding-top: 5px ;
+    text-decoration: none;
+  }
+  
+  .item a:hover {
+    background-color: #111;
+  }
+  .logo{
+  max-width: 200px;
+  max-height: 100%;
+  float: right;
+}
+    </style>
+</head>
+<body>
+    <nav>
+        <ul class="menu">
+            <li class="item"><a href="index.html">Calendar</a></li>
+            <li class="item"><a href="fav.html">Favourite Day</a></li>
+            <li class="item"><a href="monthly_goals.html">Monthly Goals</a></li>
+            <li class="item"><a href="weeklytasks/weekly.html">Weekly Tasks</a></li>
+            <li class="item"><a href="TodoList/daily.html">To-Do List</a></li>
+            <img class = logo src="logo.jpeg">
+        </ul>
+    </nav>
+    <h1>Special Days</h1>
+
+    <form id="add-day-form">
+        <input type="text" id="day-type-input" placeholder="Enter type of day (e.g. Birthday)">
+        <input type="date" id="day-date-input">
+        <button type="submit">Add Special Day</button>
+    </form>
+
+    <ul id="special-days-list"></ul>
+
+    <script>
+        // get HTML elements from DOM
+        var specialDaysList = document.getElementById('special-days-list');
+var addDayForm = document.getElementById('add-day-form');
+var dayTypeInput = document.getElementById('day-type-input');
+var dayDateInput = document.getElementById('day-date-input');
+
+// Load special days from localStorage
+var specialDays = JSON.parse(localStorage.getItem("specialDays")) || [];
+specialDays.forEach(day => {
+    var newSpecialDayLi = createSpecialDayLi(day.dayType, day.dayDate, specialDaysList);
+    specialDaysList.appendChild(newSpecialDayLi);
+});
+//each new special day will be added to a list and stored
+addDayForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var dayType = dayTypeInput.value;
+    var dayDate = dayDateInput.value;
+
+    if (dayType && dayDate) {
+        // Save the special day to localStorage
+        specialDays.push({dayType: dayType, dayDate: dayDate});
+        localStorage.setItem("specialDays", JSON.stringify(specialDays));
+
+        var newSpecialDayLi = createSpecialDayLi(dayType, dayDate, specialDaysList);
+        specialDaysList.appendChild(newSpecialDayLi);
+
+        dayTypeInput.value = '';
+        dayDateInput.value = '';
+    }
+});
+// creates a list for special days
+function createSpecialDayLi(dayType, dayDate, specialDaysList) {
+    var newSpecialDayLi = document.createElement('li');
+    newSpecialDayLi.innerHTML = '<div class="day-info"><span class="day-type">' + dayType + '</span><span>' + dayDate + '</span></div><span class="delete-day"><i class="fas fa-trash"></i></span>' ;
+   //  delete button
+    newSpecialDayLi.querySelector('.delete-day').addEventListener('click', function() {
+       // remove from list
+        specialDaysList.removeChild(newSpecialDayLi);
+
+        // Delete the special day from localStorage
+        specialDays = specialDays.filter(day => day.dayType !== dayType || day.dayDate !== dayDate);
+        localStorage.setItem("specialDays", JSON.stringify(specialDays));
+    });
+
+    return newSpecialDayLi;
+}
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+
+{
+  "name": "desktop_application",
+  "version": "1.0.0",
+  "description": "Cross-platform calendar app using HTML, CSS, JavaScript, and Electron",
+  "main": "main.js",
+  "authors": "Gabrielius Gasparavicius 2021350 // Rayen Bentemessek 2021378",
+
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^15.3.0"
+  }
+}
